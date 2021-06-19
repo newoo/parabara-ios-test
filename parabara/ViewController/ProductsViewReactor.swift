@@ -10,16 +10,20 @@ import ReactorKit
 final class ProductsViewReactor: Reactor {
   enum Action {
     case enter
+    case loadMore
     case remove(Int)
   }
   
   enum Mutation {
-    case setProducts([Product])
+    case setProducts(ProductList)
+    case appendProducts(ProductList)
     case removeProduct(UInt)
   }
   
   struct State {
     var products = [Product]()
+    var nextPage = 1
+    let size = 10
   }
   
   let initialState = State()
@@ -29,11 +33,10 @@ final class ProductsViewReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .enter:
-      return httpClient.rx.request(.list)
-        .map(BaseResponse<ProductList>.self)
-        .map { $0.data.rows }
-        .asObservable()
-        .map { .setProducts($0) }
+      return getProducts(page: 1).map { .setProducts($0) }
+      
+    case .loadMore:
+      return getProducts(page: currentState.nextPage).map { .appendProducts($0) }
       
     case let .remove(index):
       let id = currentState.products[index].id
@@ -54,13 +57,25 @@ final class ProductsViewReactor: Reactor {
     var state = state
     
     switch mutation {
-    case let .setProducts(products):
-      state.products = products
+    case let .setProducts(productList):
+      state.products = productList.rows
+      state.nextPage = productList.page + 1
+      
+    case let .appendProducts(productList):
+      state.products.append(contentsOf: productList.rows)
+      state.nextPage = productList.page + 1
       
     case let .removeProduct(id):
       state.products.removeAll { $0.id == id }
     }
     
     return state
+  }
+  
+  private func getProducts(page: Int) -> Observable<ProductList> {
+    return httpClient.rx.request(.list(page: page, size: currentState.size))
+      .map(BaseResponse<ProductList>.self)
+      .map { $0.data }
+      .asObservable()
   }
 }

@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 import ReactorKit
 
 class ProductsViewController: UIViewController, View {
@@ -28,6 +30,8 @@ class ProductsViewController: UIViewController, View {
     
     return button
   }()
+  
+  private var isPaging = false
   
   var disposeBag = DisposeBag()
   
@@ -69,16 +73,31 @@ class ProductsViewController: UIViewController, View {
   
   func bind(reactor: ProductsViewReactor) {
     reactor.state.map { $0.products }
-      .bind(to: tableView.rx.items(
+      .do(onNext: { [weak self] _ in
+        self?.isPaging = false
+      }).bind(to: tableView.rx.items(
         cellIdentifier: ProductTableViewCell.identifier,
         cellType: ProductTableViewCell.self
       )) { _, item, cell in
         cell.productInput.accept(item)
       }.disposed(by: disposeBag)
     
+    tableView.rx.itemSelected
+      .subscribe(onNext: { [weak self] in
+        let product = reactor.currentState.products[$0.row]
+        let viewController
+          = ProductEditViewController(reactor: ProductEditViewReactor(product: product))
+        viewController.modalPresentationStyle = .fullScreen
+        self?.present(viewController, animated: true, completion: nil)
+      }).disposed(by: disposeBag)
+    
     tableView.rx.itemDeleted
       .map { Reactor.Action.remove($0.row) }
       .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    tableView.rx.didScroll
+      .bind(to: self.rx.productsDidScroll)
       .disposed(by: disposeBag)
     
     addButton.rx.tap
@@ -87,6 +106,27 @@ class ProductsViewController: UIViewController, View {
         viewController.modalPresentationStyle = .fullScreen
         self?.present(viewController, animated: true, completion: nil)
       }).disposed(by: disposeBag)
+  }
+  
+  fileprivate func productsDidScroll() {
+    let offsetY = tableView.contentOffset.y
+    let contentHeight = tableView.contentSize.height
+    let height = tableView.frame.height
+    
+    guard offsetY > 0.0, offsetY > (contentHeight - height), !isPaging else {
+      return
+    }
+    
+    isPaging = true
+    self.reactor?.action.onNext(.loadMore)
+  }
+}
+
+fileprivate extension Reactive where Base: ProductsViewController {
+  var productsDidScroll: Binder<Void> {
+    return Binder(self.base) { base, _ in
+      base.productsDidScroll()
+    }
   }
 }
 

@@ -13,25 +13,41 @@ final class ProductEditViewReactor: Reactor {
     case inputTitle(String)
     case inputContent(String)
     case inputPrice(Int)
+    case selectImages(Set<Int>)
   }
   
   enum Mutation {
     case setTitle(String)
     case setContent(String)
     case setPrice(Int)
+    case setImages(Set<Int>)
     case isCompleted(Bool)
   }
   
   struct State {
+    var product: Product?
     var title: String?
     var content: String?
     var price: Int?
     var isCompleted = false
+    var selectedImages = Set<Int>()
   }
   
-  let initialState = State()
+  let initialState: State
   
   let httpClient = HTTPClient<ProductAPI>()
+  
+  init(product: Product? = nil) {
+    if let product = product {
+      initialState = State(product: product,
+                           title: product.title,
+                           content: product.content,
+                           price: Int(product.price))
+      return
+    }
+    
+    initialState = State()
+  }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
@@ -44,6 +60,9 @@ final class ProductEditViewReactor: Reactor {
     case let .inputPrice(price):
       return .just(.setPrice(price))
       
+    case let .selectImages(indices):
+      return .just(.setImages(indices))
+      
     case .confirm:
       guard let title = currentState.title,
             let content = currentState.content,
@@ -51,10 +70,33 @@ final class ProductEditViewReactor: Reactor {
         return .empty()
       }
       
-      return httpClient.rx.request(.create(title: title, content: content, price: price))
-        .map(BaseResponse<Product>.self)
-        .asObservable()
-        .map { .isCompleted(!$0.error) }
+      if let product = currentState.product {
+        return httpClient.rx.request(.update(id: product.id,
+                                      title: title,
+                                      content: content,
+                                      price: Int(price)))
+          .map(BaseResponse<Product>.self)
+          .asObservable()
+          .map { .isCompleted(!$0.error) }
+      }
+      
+      let observables = currentState.selectedImages
+        .compactMap { UIImage(named: "sample-image-\($0 + 1)") }
+        .map {
+          httpClient.rx.request(.upload(image: $0))
+            .map(BaseResponse<UploadedImage>.self)
+            .map { $0.data.id }
+            .asObservable()
+        }
+      
+      return Observable.combineLatest(observables).flatMap { [weak self] images in
+        self?.httpClient.rx.request(.create(title: title,
+                                            content: content,
+                                            price: price,
+                                            images: images))
+          .asObservable() ?? .empty()
+      }.map(BaseResponse<Product>.self)
+      .map { .isCompleted(!$0.error) }
     }
   }
   
@@ -70,6 +112,9 @@ final class ProductEditViewReactor: Reactor {
       
     case let .setPrice(price):
       state.price = price
+      
+    case let .setImages(indices):
+      state.selectedImages = indices
       
     case let .isCompleted(isCompleted):
       state.isCompleted = isCompleted

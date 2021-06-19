@@ -12,7 +12,12 @@ import RxCocoa
 class ProductTableViewCell: UITableViewCell {
   static let identifier = "ProductTableViewCell"
   
-  let thumbnailImageView = UIImageView()
+  let thumbnailImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.backgroundColor = .gray
+    
+    return imageView
+  }()
   
   let titleLabel: UILabel = {
     let label = UILabel()
@@ -50,6 +55,11 @@ class ProductTableViewCell: UITableViewCell {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    thumbnailImageView.image = nil
   }
   
   private func setConstraints() {

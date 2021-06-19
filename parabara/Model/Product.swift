@@ -11,7 +11,7 @@ struct Product: Decodable {
   let id: UInt
   let title: String
   let content: String
-  let price: UInt
+  let price: Int
   let images: [String]
   
   enum CodingKeys: String, CodingKey {

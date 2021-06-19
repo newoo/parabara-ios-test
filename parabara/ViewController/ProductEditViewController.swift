@@ -61,7 +61,7 @@ class ProductEditViewController: UIViewController, ReactorKit.View {
   private let textFieldStackView: UIStackView
   private let imageStackView: UIStackView
   
-  private var selectedIndex = Set<Int>()
+  private var selectedIndices = Set<Int>()
   
   var disposeBag = DisposeBag()
   
@@ -120,6 +120,16 @@ class ProductEditViewController: UIViewController, ReactorKit.View {
   }
   
   func bind(reactor: ProductEditViewReactor) {
+    reactor.state.compactMap { $0.product }
+      .take(1)
+      .do(onNext: { [weak self] _ in
+        self?.imageStackView.isHidden = true
+      }).subscribe(onNext: { [weak self] product in
+        self?.titleTextField.text = product.title
+        self?.contentTextField.text = product.content
+        self?.priceTextField.text = String(product.price)
+      }).disposed(by: disposeBag)
+    
     reactor.state.map { $0.isCompleted }
       .filter { $0 }
       .subscribe(onNext: { [weak self] _ in
@@ -163,15 +173,17 @@ class ProductEditViewController: UIViewController, ReactorKit.View {
       imageView.rx.tapGesture()
         .when(.recognized)
         .subscribe(onNext: { [weak self] _ in
-          if self?.selectedIndex.contains(offset) == true {
-            self?.selectedIndex.remove(offset)
+          if self?.selectedIndices.contains(offset) == true {
+            self?.selectedIndices.remove(offset)
             imageView.layer.borderWidth = 0
+            self?.reactor?.action.onNext(.selectImages(self?.selectedIndices ?? []))
             return
           }
           
-          self?.selectedIndex.insert(offset)
+          self?.selectedIndices.insert(offset)
           imageView.layer.borderWidth = 4
           imageView.layer.borderColor = UIColor.red.cgColor
+          self?.reactor?.action.onNext(.selectImages(self?.selectedIndices ?? []))
         }).disposed(by: self.disposeBag)
     }
   }

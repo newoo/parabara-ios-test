@@ -8,9 +8,9 @@
 import Foundation
 
 struct ProductList: Decodable {
-  let page: UInt
-  let total: UInt
-  let records: UInt
+  let page: Int
+  let total: Int
+  let records: Int
   let rows: [Product]
   
   enum CodingKeys: String, CodingKey {
