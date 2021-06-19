@@ -56,6 +56,11 @@ class ProductsViewController: UIViewController, View {
       )) { _, item, cell in
         cell.productInput.accept(item)
       }.disposed(by: disposeBag)
+    
+    tableView.rx.itemDeleted
+      .map { Reactor.Action.remove($0.row) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 }
 

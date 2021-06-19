@@ -10,10 +10,12 @@ import ReactorKit
 final class ProductsViewReactor: Reactor {
   enum Action {
     case enter
+    case remove(Int)
   }
   
   enum Mutation {
     case setProducts([Product])
+    case removeProduct(UInt)
   }
   
   struct State {
@@ -28,10 +30,23 @@ final class ProductsViewReactor: Reactor {
     switch action {
     case .enter:
       return httpClient.rx.request(.list)
-        .map(BaseResponse.self)
+        .map(BaseResponse<ProductList>.self)
         .map { $0.data.rows }
         .asObservable()
         .map { .setProducts($0) }
+      
+    case let .remove(index):
+      let id = currentState.products[index].id
+      return httpClient.rx.request(.delete(id))
+        .do(onSuccess: { print($0) })
+        .map(BaseResponse<Bool>.self)
+        .map { $0.data }
+        .asObservable()
+        .flatMap { isSuccess in
+          isSuccess
+            ? Observable.just(Mutation.removeProduct(id))
+            : Observable.empty()
+        }
     }
   }
   
@@ -41,6 +56,9 @@ final class ProductsViewReactor: Reactor {
     switch mutation {
     case let .setProducts(products):
       state.products = products
+      
+    case let .removeProduct(id):
+      state.products.removeAll { $0.id == id }
     }
     
     return state

@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct BaseResponse: Decodable {
+struct BaseResponse<T: Decodable>: Decodable {
   let code: String
   let status: UInt
-  let data: Result
+  let data: T
   let error: Bool
   let message: String
   

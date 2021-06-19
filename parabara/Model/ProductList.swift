@@ -1,5 +1,5 @@
 //
-//  Result.swift
+//  ProductList.swift
 //  parabara
 //
 //  Created by Taeheon Woo on 2021/06/19.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Result: Decodable {
+struct ProductList: Decodable {
   let page: UInt
   let total: UInt
   let records: UInt

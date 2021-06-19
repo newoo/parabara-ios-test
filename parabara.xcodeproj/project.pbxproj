@@ -12,7 +12,7 @@
 		32058642267E0FCA00A239AF /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058641267E0FCA00A239AF /* HTTPClient.swift */; };
 		32058644267E0FF800A239AF /* ProductAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058643267E0FF800A239AF /* ProductAPI.swift */; };
 		32058646267E10BD00A239AF /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058645267E10BD00A239AF /* BaseResponse.swift */; };
-		32058648267E142000A239AF /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058647267E142000A239AF /* Result.swift */; };
+		32058648267E142000A239AF /* ProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058647267E142000A239AF /* ProductList.swift */; };
 		3205864A267E170B00A239AF /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058649267E170B00A239AF /* ProductTableViewCell.swift */; };
 		3205864D267E1DDE00A239AF /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3205864C267E1DDE00A239AF /* UIImageView+Extension.swift */; };
 		32D6A1472679FEFC002E681E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D6A1462679FEFC002E681E /* AppDelegate.swift */; };
@@ -52,7 +52,7 @@
 		32058641267E0FCA00A239AF /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		32058643267E0FF800A239AF /* ProductAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductAPI.swift; sourceTree = "<group>"; };
 		32058645267E10BD00A239AF /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
-		32058647267E142000A239AF /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		32058647267E142000A239AF /* ProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductList.swift; sourceTree = "<group>"; };
 		32058649267E170B00A239AF /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		3205864C267E1DDE00A239AF /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		32D6A1432679FEFC002E681E /* parabara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = parabara.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,7 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				3205863B267E067B00A239AF /* Product.swift */,
-				32058647267E142000A239AF /* Result.swift */,
+				32058647267E142000A239AF /* ProductList.swift */,
 				32058645267E10BD00A239AF /* BaseResponse.swift */,
 			);
 			path = Model;
@@ -466,7 +466,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32058648267E142000A239AF /* Result.swift in Sources */,
+				32058648267E142000A239AF /* ProductList.swift in Sources */,
 				3205863C267E067B00A239AF /* Product.swift in Sources */,
 				3205863A267E060100A239AF /* ProductsViewReactor.swift in Sources */,
 				32058642267E0FCA00A239AF /* HTTPClient.swift in Sources */,
