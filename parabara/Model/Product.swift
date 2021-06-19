@@ -17,4 +17,13 @@ struct Product: Decodable {
   enum CodingKeys: String, CodingKey {
     case id, title, content, price, images
   }
+  
+  var dictionary: [String: Any] {
+    [
+      "title": title,
+      "content": content,
+      "price": price,
+      "images": 96
+    ]
+  }
 }

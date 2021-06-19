@@ -15,6 +15,8 @@
 		32058648267E142000A239AF /* ProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058647267E142000A239AF /* ProductList.swift */; };
 		3205864A267E170B00A239AF /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058649267E170B00A239AF /* ProductTableViewCell.swift */; };
 		3205864D267E1DDE00A239AF /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3205864C267E1DDE00A239AF /* UIImageView+Extension.swift */; };
+		3205864F267E2C4700A239AF /* ProductEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3205864E267E2C4700A239AF /* ProductEditViewController.swift */; };
+		32058651267E2D4400A239AF /* ProductEditViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32058650267E2D4400A239AF /* ProductEditViewReactor.swift */; };
 		32D6A1472679FEFC002E681E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D6A1462679FEFC002E681E /* AppDelegate.swift */; };
 		32D6A1492679FEFC002E681E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D6A1482679FEFC002E681E /* SceneDelegate.swift */; };
 		32D6A14B2679FEFC002E681E /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D6A14A2679FEFC002E681E /* ProductsViewController.swift */; };
@@ -55,6 +57,8 @@
 		32058647267E142000A239AF /* ProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductList.swift; sourceTree = "<group>"; };
 		32058649267E170B00A239AF /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
 		3205864C267E1DDE00A239AF /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		3205864E267E2C4700A239AF /* ProductEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEditViewController.swift; sourceTree = "<group>"; };
+		32058650267E2D4400A239AF /* ProductEditViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEditViewReactor.swift; sourceTree = "<group>"; };
 		32D6A1432679FEFC002E681E /* parabara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = parabara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32D6A1462679FEFC002E681E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		32D6A1482679FEFC002E681E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +135,8 @@
 			children = (
 				32D6A14A2679FEFC002E681E /* ProductsViewController.swift */,
 				32058639267E060100A239AF /* ProductsViewReactor.swift */,
+				3205864E267E2C4700A239AF /* ProductEditViewController.swift */,
+				32058650267E2D4400A239AF /* ProductEditViewReactor.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -466,6 +472,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3205864F267E2C4700A239AF /* ProductEditViewController.swift in Sources */,
 				32058648267E142000A239AF /* ProductList.swift in Sources */,
 				3205863C267E067B00A239AF /* Product.swift in Sources */,
 				3205863A267E060100A239AF /* ProductsViewReactor.swift in Sources */,
@@ -475,6 +482,7 @@
 				32D6A1472679FEFC002E681E /* AppDelegate.swift in Sources */,
 				3205864D267E1DDE00A239AF /* UIImageView+Extension.swift in Sources */,
 				3205864A267E170B00A239AF /* ProductTableViewCell.swift in Sources */,
+				32058651267E2D4400A239AF /* ProductEditViewReactor.swift in Sources */,
 				32D6A1492679FEFC002E681E /* SceneDelegate.swift in Sources */,
 				32058646267E10BD00A239AF /* BaseResponse.swift in Sources */,
 			);

@@ -10,6 +10,7 @@ import MoyaSugar
 
 enum ProductAPI: SugarTargetType {
   case list
+  case create(title: String, content: String, price: Int)
   case delete(UInt)
   
   var baseURL: URL {
@@ -21,13 +22,26 @@ enum ProductAPI: SugarTargetType {
     case .list:
       return .get("")
       
+    case .create:
+      return .post("")
+      
     case let .delete(id):
       return .delete("/\(id)")
     }
   }
   
   var parameters: Parameters? {
-    nil
+    switch self {
+    case let .create(title, content, price):
+      return [
+        "title": title,
+        "content": content,
+        "price": price
+      ]
+      
+    default:
+      return nil
+    }
   }
   
   var headers: [String: String]? {

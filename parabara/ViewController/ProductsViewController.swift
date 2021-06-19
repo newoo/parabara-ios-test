@@ -21,6 +21,14 @@ class ProductsViewController: UIViewController, View {
     return tableView
   }()
   
+  private let addButton: UIButton = {
+    let button = UIButton()
+    button.setTitle("ADD", for: .normal)
+    button.backgroundColor = .blue
+    
+    return button
+  }()
+  
   var disposeBag = DisposeBag()
   
   init(reactor: ProductsViewReactor = .init()) {
@@ -37,14 +45,25 @@ class ProductsViewController: UIViewController, View {
     super.viewDidLoad()
     view.backgroundColor = .white
     setConstraints()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     reactor?.action.onNext(.enter)
   }
   
   private func setConstraints() {
     view.addSubview(tableView)
+    view.addSubview(addButton)
     
     tableView.snp.makeConstraints {
-      $0.edges.equalTo(view.safeAreaLayoutGuide)
+      $0.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    addButton.snp.makeConstraints {
+      $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+      $0.top.equalTo(tableView.snp.bottom)
+      $0.height.equalTo(80)
     }
   }
   
@@ -61,6 +80,13 @@ class ProductsViewController: UIViewController, View {
       .map { Reactor.Action.remove($0.row) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+    
+    addButton.rx.tap
+      .subscribe(onNext: { [weak self] in
+        let viewController = ProductEditViewController()
+        viewController.modalPresentationStyle = .fullScreen
+        self?.present(viewController, animated: true, completion: nil)
+      }).disposed(by: disposeBag)
   }
 }
 
